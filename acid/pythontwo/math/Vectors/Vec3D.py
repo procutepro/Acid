@@ -1,5 +1,4 @@
 import math as m
-import pythontwo.Vectors.Vec2D as Vec2D
 
 class Vect3D:
     def __init__(self, x=0.0, y=0.0, z=0.0):
@@ -8,7 +7,7 @@ class Vect3D:
         self.z = z
     
     def returnvec(self):
-        return f"({self.x}, {self.y}, {self.z})"
+        return (self.x, self.y, self.z)
 
     def add(self, other):
         if isinstance(other, Vect3D):
@@ -57,9 +56,14 @@ class Vect3D:
         else:
             raise ValueError("Cannot normalize a zero vector")
     
-    def project(self):
-        projected_Vec = Vec2D.Vect2D(self.x / self.z, self.y / self.z)
-        return projected_Vec
+    def project(self, focal_length):
+        if self.z + focal_length == 0:  # Prevent division by zero
+            return (0, 0, 0)  # or raise an exception
+        projected_x = (self.x * focal_length) / (self.z + focal_length)
+        projected_y = (self.y * focal_length) / (self.z + focal_length)
+        return (projected_x, projected_y, 0)
+
+
     
     def angle_between(self, other):
         if isinstance(other, Vect3D):

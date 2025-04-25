@@ -1,3 +1,4 @@
+import acid.pythontwo.math.Vectors.Vec3D as v
 
 class matrix:
     def __init__(self, martix):
@@ -7,7 +8,7 @@ class matrix:
         return self.matrix
     
     def tranfoation(self, vector):
-        vectors = vector.returnvect()
+        vectors = vector.returnvec()
         result = [0] * len(self.matrix)
 
         for i in range(len(self.matrix)):
@@ -16,7 +17,7 @@ class matrix:
 
                 result[i] += self.matrix[i][j] * vectors[j]
 
-        return result
+        return v.Vect3D(result[0], result[1], result[2])
 
     def matrixmul(self, other):
         matrix_a = self.returnmatrix()
