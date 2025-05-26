@@ -17,7 +17,6 @@ class window:
         if self.brorunning:
             x, y = map(int, pos)
             pg.draw.rect(self.playground, color, pg.Rect(x, y, 1, 1))
-            pg.display.update()
 
     def MakeRect(self, pos, size, color):
         if self.brorunning:
@@ -30,25 +29,21 @@ class window:
                 if comp < 0 or comp > 255:
                     raise ValueError(f"Color component {comp} out of range (0-255)")
             pg.draw.rect(self.playground, (r, g, b), pg.Rect(x, y, w, h))
-            pg.display.update()
 
     def MakeImage(self, pos, size, img_path):
         if self.brorunning:
             image = pg.image.load(img_path)
-            pg.transform.scale(image, size)
+            image = pg.transform.scale(image, size)
             self.playground.blit(image, pos)
-            pg.display.update()
     
     def MakeCircle(self, pos, radius, color):
         if self.brorunning:
             x, y = map(int, pos)
             pg.draw.circle(self.playground, color, (x, y), radius)
-            pg.display.update()  # Update display
     
     def makeline(self, point1, point2, color="#FFFFFF"):
         if self.brorunning:
             pg.draw.line(self.playground, color, point1, point2)
-            pg.display.update()
             
     def fill(self, colour):
         if self.brorunning:
@@ -60,16 +55,22 @@ class window:
         else:
             return (0, 0)
     
-    def makesound(self, file):
-        pg.mixer.music.load(file)
-        pg.mixer.music.play()
+    def makesound(self, file, mode=0, volume=0.5):
+        if self.brorunning:
+            pg.mixer.init()
+            pg.mixer.music.set_volume(volume)
+            sound = pg.mixer.Sound(file)
+            sound.play(loops=mode)
     
     def closesound(self):
         pg.mixer.stop()
         
     def loop(self):
         if self.brorunning:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
+            for self.event in pg.event.get():
+                if self.event.type == pg.QUIT:
                     self.brorunning = False
                     pg.quit()
+    
+    def mupdate(self):
+        pg.display.update()
