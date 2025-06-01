@@ -5,10 +5,10 @@
 > wtf happened
 > acid is not availve for pip yet
 > ohhh yeah i forgot ok sooooo... i tihnk we need to go manuly
-
+>
 > ok here is the step by step guide copy this because this repo is going to be froged
-
->> ok so download it and yeet the folder to ... wait lemme find it real quie... ... ... yeah i found it
+>
+> ok so download it and yeet the folder to ... wait lemme find it real quie... ... ... yeah i found it
 
     C:\Users\i_will_not_share\AppData\Local\Programs\Python\Python312\Lib\site-packages
 
@@ -25,7 +25,7 @@
 >    
 >   to import you just:
 >
->      import acid.pythontwo.window.window as WW(or whatever you like)
+>      import acid.pythontwo.window.window as WW # (or whatever you like)
 >
 >   now that example was for 2D but what about 3D- (Shut up no body cares we will add docs for 3D later because i am >lazy AF bois) you made me sad ( -_•)▄︻テحكـ━一💥 yeah now you ded
 >
