@@ -38,7 +38,7 @@
 >   ### Game loop
 >
 >   but if you run it, it will show you a screen for a >milli-second,
->   so to solve that you make a while loop and put 2 things >in it 3 is you wanna fill the screen with something else >color (wtf was that grammar my guy)
+>   so to solve that you make a while loop and put 2 things in it 3 is you wanna fill the screen with something else >color (wtf was that grammar my guy)
 >
 >   example code again bois:
 >
