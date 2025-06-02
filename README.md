@@ -27,7 +27,7 @@
 >
 >      import acid.pythontwo.window.window as WW # (or whatever you like)
 >
->   now that example was for 2D but what about 3D- (Shut up no body cares we will add docs for 3D later because i am >lazy AF bois) you made me sad ( -_•)▄︻テحكـ━一💥 yeah now you ded
+>   now that example was for 2D but what about 3D- (Shut up no body cares we will add docs for 3D later because i am lazy AF bois) you made me sad ( -_•)▄︻テحكـ━一💥 yeah now you ded
 >
 >   now to start it we just say to it:
 >
@@ -37,8 +37,8 @@
 >
 >   ### Game loop
 >
->   but if you run it, it will show you a screen for a >milli-second,
->   so to solve that you make a while loop and put 2 things in it 3 is you wanna fill the screen with something else >color (wtf was that grammar my guy)
+>   but if you run it, it will show you a screen for a milli-second,
+>   so to solve that you make a while loop and put 2 things in it 3 is you wanna fill the screen with something else color (wtf was that grammar my guy)
 >
 >   example code again bois:
 >
