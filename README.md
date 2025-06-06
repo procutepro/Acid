@@ -49,10 +49,46 @@
 >
 >   example code again bois:
 >
->    while window.brorunning:
->        window.loop()
->        window.mupdate()
+>        while window.brorunning:
+>            window.loop()
+>            window.mupdate()
 >    
 >   ### Creating Shapes
 >
->   i will do this part later
+>   (i will do this part later) well that was past tenses
+>
+>   (i hate my life while writing a README f#######K)
+>
+>   what was i suppose to do... oh yeah shapes right yeah lets make this quike because i need to go to a wedding of some unknown person
+>
+>   to draw a rectangle:
+> 
+>   inside the gmae loop after window.loop()
+> 
+>     window.MakeRect(*pos, *size, *color)
+> 
+>   to make a circle i forgot half of the things
+> 
+>   inside the game loop after window.loop()
+>
+>     window.MakeCircle(*pos, *radius, *color)
+>
+>   and i think i have dementia because i forgot lines bruh:
+>
+>     window.Makeline((*point1), (*point2), (*color))
+>
+>   and i think i have dementia because i forgot pixel bruh:
+>
+>     window.Makepixel(*pos, *color)
+>
+>   ### Images
+>
+>   is this entire thing outdated i think so because there is still 3D, ui and maths left when will i make readme for them. it will take me ages am i alive  myr92 rfqjtmfgvb hdzfjgdvrbjhvzx
+>
+>   ok what is the topic Images right images are arrays of 3 pixels red, green and blue (someone) you were talking aboput how to display a image in acid
+>
+>   thanks for reminding
+>
+>   this is the code:
+>
+>     window.MakeImage(*pos, *size, *img_loc)
