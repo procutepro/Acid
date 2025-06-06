@@ -38,7 +38,7 @@
 >
 >   now to start it we just say to it:
 >
->      window = WW.window((800, 600))
+>      window = WW.window((800, 600), "test for dummies")
 >
 >      window.init()
 >
