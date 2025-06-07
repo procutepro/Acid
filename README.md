@@ -2,8 +2,11 @@
 
 ## Installation
 > Error 404
+> 
 > wtf happened
+> 
 > acid is not availve for pip yet
+> 
 > ohhh yeah i forgot ok sooooo... i tihnk we need to go manuly
 >
 > ok here is the step by step guide copy this because this repo is going to be froged
