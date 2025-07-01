@@ -1,0 +1,16 @@
+🐸 FROG License v1.0
+Copyright (c) 2024 Pratyush
+
+You are free to download, use and modify this software.
+
+BUT:
+
+	If you use any part of this code in your project,
+	you must open source your code
+
+	Also, give me credit. Just put the name of software somewhere in your README or license.
+	
+	And pls don't redistubute it i did a lot of work pls.
+
+That’s it. Be cool. Respect the frog.
+if you don't respect the frogs... the frogs will come for you. 🐸
