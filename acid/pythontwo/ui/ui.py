@@ -4,7 +4,7 @@ import time
 
 class Button:
     def __init__(self, screen, pos=(0, 0), size=(1, 1), texture="example.png", text="hello"):
-        self.screen = screen.playground
+        self.screen = screen
         self.pos = pos
         self.size = size
         self.texture = texture

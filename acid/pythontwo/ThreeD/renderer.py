@@ -14,39 +14,136 @@ FOV               = 60
 MOVE_SPEED        = 0.1
 MOUSE_SENSITIVITY = 0.15
 
+# --- ACIDUI ---
+
+class AcidUI:
+    mouse_pos = (0, 0)
+    mouse_down = False
+    mouse_up = False
+
+    @staticmethod
+    def begin(width, height):
+        AcidUI.mouse_pos = pygame.mouse.get_pos()
+        AcidUI.mouse_pos = (AcidUI.mouse_pos[0], height - AcidUI.mouse_pos[1])
+        AcidUI.mouse_down = pygame.mouse.get_pressed()[0]
+        AcidUI.mouse_up = not AcidUI.mouse_down
+
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        gluOrtho2D(0, width, 0, height)
+
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+        glDisable(GL_DEPTH_TEST)
+
+    @staticmethod
+    def end():
+        glEnable(GL_DEPTH_TEST)
+        glPopMatrix()
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
+
+    @staticmethod
+    def draw_quad(x, y, w, h, color=(1.0, 1.0, 1.0, 1.0)):
+        glColor4f(*color)
+        glBegin(GL_QUADS)
+        glVertex2f(x, y)
+        glVertex2f(x + w, y)
+        glVertex2f(x + w, y + h)
+        glVertex2f(x, y + h)
+        glEnd()
+
+    @staticmethod
+    def is_hover(x, y, w, h):
+        mx, my = AcidUI.mouse_pos
+        return x <= mx <= x + w and y <= my <= y + h
+
+    @staticmethod
+    def button(label, x, y, w, h, func, color=(0.2, 0.7, 1.0, 1.0), hover_color=(0.3, 0.8, 1.0, 1.0), click_color=(0.1, 0.6, 0.9, 1.0)):
+        hovered = AcidUI.is_hover(x, y, w, h)
+        pressed = hovered and AcidUI.mouse_down
+
+        # Choose color
+        if pressed:
+            AcidUI.draw_quad(x, y, w, h, click_color)
+        elif hovered:
+            AcidUI.draw_quad(x, y, w, h, hover_color)
+        else:
+            AcidUI.draw_quad(x, y, w, h, color)
+        if pressed and AcidUI.mouse_up:
+            func()
+
+        # (Optional) Add text drawing here later with texture or bitmap
+
+        return hovered and AcidUI.mouse_up
+
 # --- BASIC OBJECT TO DRAW ---
 class Object3D:
     def __init__(self):
-        self.vertices = np.array([
-            [1, 1, -1], [1, -1, -1], [-1, -1, -1], [-1, 1, -1],
-            [1, 1, 1], [1, -1, 1], [-1, -1, 1], [-1, 1, 1]
-        ], dtype=np.float32)
+        self.position = (0, 0, 0)
+        self.rotation = (0, 0, 0)
+        self.scale = (1, 1, 1)
+        self.velocity = (0, 0, 0)
+        self.mass = 1.0  # Default mass for physics calculations
+        self.vertices = []
+        self.uvs = []
+        self.faces = []
+        self.tex_id = None
 
-        self.faces = [
-            (0, 1, 2, 3), (4, 5, 6, 7), (3, 2, 6, 7),
-            (0, 1, 5, 4), (3, 0, 4, 7), (1, 2, 6, 5)
-        ]
+    def set_texture(self, path):
+        texture = pygame.image.load(path)
+        texture = pygame.transform.flip(texture, False, True)
+        texture_data = pygame.image.tostring(texture, "RGB", True)
 
-        self.colors = [
-            (1, 0, 0), (0, 1, 0), (0, 0, 1),
-            (1, 1, 0), (1, 0, 1), (0, 1, 1)
-        ]
+        self.tex_id = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, self.tex_id)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture.get_width(), texture.get_height(), 0,
+                     GL_RGB, GL_UNSIGNED_BYTE, texture_data)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 
-    def draw(self, pos=(0, 0, 0), scale=(1, 1, 1), rotation=(0, 0, 0), ignore_colors=False):
+    def draw(self, ignore_colors=False, wireframe=False, ignore_texture=False):
         glPushMatrix()
-        glTranslatef(*pos)
-        glScalef(*scale)
-        glRotatef(rotation[0], 1, 0, 0)
-        glRotatef(rotation[1], 0, 1, 0)
-        glRotatef(rotation[2], 0, 0, 1)
+    
+        # 🐸 Apply Position
+        glTranslatef(self.position[0], self.position[1], self.position[2])
+    
+        # 🐸 Apply Rotation (XYZ)
+        glRotatef(self.rotation[0], 1, 0, 0)
+        glRotatef(self.rotation[1], 0, 1, 0)
+        glRotatef(self.rotation[2], 0, 0, 1)
 
-        glBegin(GL_QUADS)
-        for idx, face in enumerate(self.faces):
-            glColor3fv((0.5, 0.5, 0.9) if ignore_colors else self.colors[idx % len(self.colors)])
-            for vert in face:
-                glVertex3fv(self.vertices[vert])
+        # 🐸 Apply Scale
+        glScalef(self.scale[0], self.scale[1], self.scale[2])
+
+        # 🐸 Texture binding
+        if self.tex_id and not ignore_texture:
+            glEnable(GL_TEXTURE_2D)
+            glBindTexture(GL_TEXTURE_2D, self.tex_id)
+        else:
+            glDisable(GL_TEXTURE_2D)
+    
+        # 🐸 Wireframe mode
+        if wireframe:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        else:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+    
+        # 🐸 Draw the triangles
+        glBegin(GL_TRIANGLES)
+        for face in self.faces:
+            for v_idx, uv_idx in face:
+                if self.tex_id and not ignore_texture:
+                    glTexCoord2fv(self.uvs[uv_idx])
+                glVertex3fv(self.vertices[v_idx])
         glEnd()
-
+    
+        # 🧼 Cleanup
+        glDisable(GL_TEXTURE_2D)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glPopMatrix()
 
 # --- CAMERA HANDLING ---
@@ -83,8 +180,13 @@ class Camera:
     def bettermove(self, x, y, z):
         self.update_vectors()
         self.position[0] += self.right[0] * x + self.up[0] * y + self.front[0] * z
-        self.position[1] += self.right[1] * x + self.up[1] * y + self.front[1] * z
+        self.position[1] += y
         self.position[2] += self.right[2] * x + self.up[2] * y + self.front[2] * z
+    
+    def move(self, x, y, z):
+        self.position[0] += x
+        self.position[1] += y
+        self.position[2] += z
 
     def apply(self):
         self.update_vectors()
@@ -96,7 +198,7 @@ class Camera:
 class Engine3D:
     def __init__(self):
         pygame.init()
-        pygame.display.set_mode(SCREEN_SIZE, DOUBLEBUF | OPENGL)
+        self.screen = pygame.display.set_mode(SCREEN_SIZE, DOUBLEBUF | OPENGL)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(FOV, SCREEN_SIZE[0] / SCREEN_SIZE[1], 0.1, 100.0)
@@ -170,24 +272,34 @@ def main():
 
 # --- Helper Functions ---
 
-def load_obj(filename):
+def load_obj_with_uv(path):
     vertices = []
+    uvs = []
     faces = []
 
-    with open(filename, 'r') as f:
-        for line in f:
-            if line.startswith('v '):
+    with open(path, 'r') as file:
+        for line in file:
+            if line.startswith('v '):  # Vertex position
                 parts = line.strip().split()
                 vertex = list(map(float, parts[1:4]))
                 vertices.append(vertex)
-            elif line.startswith('f '):
+
+            elif line.startswith('vt '):  # Texture coordinate
                 parts = line.strip().split()
-                face = [int(p.split('/')[0]) - 1 for p in parts[1:]]
-                faces.append(tuple(face))
+                uv = list(map(float, parts[1:3]))
+                uvs.append(uv)
 
-    vertices = np.array(vertices, dtype=np.float32)
-    return vertices, faces
+            elif line.startswith('f '):  # Face line
+                face = []
+                parts = line.strip().split()[1:]
+                for part in parts:
+                    indices = part.split('/')
+                    v_idx = int(indices[0]) - 1
+                    uv_idx = int(indices[1]) - 1 if len(indices) > 1 and indices[1] != '' else 0
+                    face.append((v_idx, uv_idx))
+                faces.append(face)
 
+    return vertices, uvs, faces
 
 if __name__ == "__main__":
     main()

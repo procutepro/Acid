@@ -110,5 +110,4 @@
 >   this is the code:
 >``` python
 >     window.MakeImage(*pos, *size, *img_loc)
-
 > ```
