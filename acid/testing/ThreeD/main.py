@@ -1,29 +1,5 @@
 import acid.pythontwo.ThreeD.renderer as TR
 import pygame
-import time
-
-# --- Functional FPS Logger ---
-_last_time = time.time()
-_frame_count = 0
-_interval = 1.0
-_label = "FPS"
-
-def init_fps_logger(interval=1.0, label="FPS"):
-    global _last_time, _frame_count, _interval, _label
-    _last_time = time.time()
-    _frame_count = 0
-    _interval = interval
-    _label = label
-
-def tick_fps():
-    global _last_time, _frame_count, _interval, _label
-    _frame_count += 1
-    now = time.time()
-    if now - _last_time >= _interval:
-        fps = _frame_count / (now - _last_time)
-        print(f"[{_label}] {fps:.2f} frames/sec")
-        _frame_count = 0
-        _last_time = now
 
 # --- Main Usage ---
 def example_usage():
@@ -36,8 +12,6 @@ def example_usage():
 
     engine.set_mouse(center_X, center_Y)
     pygame.mouse.get_rel()
-
-    init_fps_logger(1.0, "FROG_ENGINE")
 
     while engine.running:
         engine.loop()
@@ -68,9 +42,8 @@ def example_usage():
 
         engine.set_mouse(center_X, center_Y)
 
-        tick_fps()  # ← 🎉 tick the FPS logger
-
     pygame.quit()
 
 if __name__ == "__main__":
     example_usage()
+
