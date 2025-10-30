@@ -8,7 +8,8 @@ def example_usage():
     camera = engine.camera
 
     frog = TR.Object3D()
-    frog.vertices, frog.faces = TR.load_obj("untitled.obj")
+    ui = TR.AcidUI()
+    frog.vertices, frog.uvs, frog.faces = TR.load_obj_with_uv("untitled.obj")
 
     engine.set_mouse(center_X, center_Y)
     pygame.mouse.get_rel()
@@ -37,6 +38,9 @@ def example_usage():
             camera.bettermove(0, -0.1, 0)
 
         camera.apply()
+        ui.begin(800, 600)
+        ui.draw_quad(0, 0, 150, 600, (0, 0, 1, 0))
+        ui.end()
         frog.draw(ignore_colors=True)
         engine.update()
 
@@ -46,4 +50,4 @@ def example_usage():
 
 if __name__ == "__main__":
     example_usage()
-
+ 
