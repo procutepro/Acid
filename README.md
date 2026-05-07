@@ -1,5 +1,9 @@
 # Acid the only thing i am making which i am going to use
 
+## NEWS
+
+This Repo is now unmaintained so i will not work on this because it is nto that good actually if you want a restructed acid you can go to FlameAcid
+
 ## Installation
 > Error 404
 > 
